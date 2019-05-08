@@ -3,13 +3,15 @@
 
 int main(int argc, char const *argv[])
 {
-    uint32_t *buffer = load_data_from_file("./USER/crc.hex");
+    unsigned int buffer_length = 0;
+    uint32_t *buffer = load_data_from_file("./USER/crc.bin", &buffer_length);
 
-    printf("0x%x\n", buffer[0]);
+    // to do
 
     free(buffer);
     return 0;
 }
+
 
 void write_file(uint32_t value)
 {
@@ -30,11 +32,10 @@ void write_file(uint32_t value)
     fclose(file); 
 }
 
-uint32_t *load_data_from_file(const char *path_file)
+uint32_t *load_data_from_file(const char *path_file, unsigned int *buf_size)
 {
     uint32_t *buffer;
     uint32_t value;
-    long int k=0;
 
     // open the file
     FILE *file;
@@ -47,12 +48,12 @@ uint32_t *load_data_from_file(const char *path_file)
     }
 
     // count number of values
-    k = filesize_bytes(file); // file size in bytes
-    k = k / 4;
-    printf("%lu items were found.\n", k);
+    *buf_size = filesize_bytes(file); // file size in bytes
+    *buf_size = *buf_size / 4;
+    printf("%u items were found.\n", *buf_size);
 
     // allocate memory for the array
-    buffer = (uint32_t *) calloc(k, sizeof(uint32_t));
+    buffer = (uint32_t *) calloc(*buf_size, sizeof(uint32_t));
     if(buffer == NULL)
     {
         printf("ERROR: not enough memory.\n");
@@ -65,7 +66,7 @@ uint32_t *load_data_from_file(const char *path_file)
     rewind(file);
 
     // write file values to array 
-    fread(buffer, sizeof(uint32_t), k, file);
+    fread(buffer, sizeof(uint32_t), *buf_size, file);
 
     printf("The buffer has been filled successfully.\n");
 
