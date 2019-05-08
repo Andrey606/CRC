@@ -6,7 +6,9 @@ int main(int argc, char const *argv[])
     unsigned int buffer_length = 0;
     uint32_t *buffer = load_data_from_file("./USER/crc.bin", &buffer_length);
 
-    // to do
+    uint32_t crc = calculate_crc_32(buffer, buffer_length);
+    printf("crc: %u\n", crc);
+    printf("crc: 0x%x\n", crc);
 
     free(buffer);
     return 0;
@@ -16,6 +18,7 @@ int main(int argc, char const *argv[])
 void write_file(uint32_t value)
 {
     FILE *file;
+
 
     if((file=fopen("./USER/crc.bin", "a+"))==NULL) 
     {
@@ -87,7 +90,20 @@ long int filesize_bytes( FILE *fp )
     return( size_of_file );
 }
 
-uint32_t calculate_crc_32(uint32_t *buffer, uint32_t length)
+uint32_t calculate_crc_32(uint32_t *buffer, unsigned int length)
 {
-    return 0;
+    uint32_t crc = 0xFFFFFFFF;
+    unsigned int i;
+ 
+    while (length--)
+    {
+        crc ^= *buffer++;
+ 
+        for (i = 0; i < 32; i++)
+            crc = crc & 0x80000000 ? (crc << 1) ^ CRC_32_polynomial : crc << 1;
+ 
+    } 
+ 
+    crc ^= 0xFFFFFFFF;
+    return crc;
 }
