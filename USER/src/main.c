@@ -1,12 +1,11 @@
-
 #include "../inc/main.h"
 
 
 int main(int argc, char const *argv[])
 {
-    uint32_t *buffer = load_data_from_file("./USER/crc.bin");
+    uint32_t *buffer = load_data_from_file("./USER/crc.hex");
 
-    printf("%u\n", buffer[0]);
+    printf("0x%x\n", buffer[0]);
 
     free(buffer);
     return 0;
