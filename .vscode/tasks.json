@@ -16,7 +16,7 @@
               "gcc",
               "-o",
               "./USER/main", 
-              "./USER/main.c"
+              "./USER/src/main.c"
             ],
             "group": "build",
             "problemMatcher": [],
