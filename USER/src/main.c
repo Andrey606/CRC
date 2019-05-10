@@ -37,7 +37,6 @@ void write_file(uint32_t value)
 uint32_t *load_data_from_file(const char *path_file, unsigned int *buf_size)
 {
     uint32_t *buffer;
-    uint32_t value;
 
     // open the file
     FILE *file;
@@ -101,7 +100,7 @@ void int_to_bytes(uint32_t i)
 
 void generate_crc32_table(uint32_t poly)
 {
-    uint32_t crc, c;
+    uint32_t c;
 
     for (int i = 0; i < 256; i++)
     {
